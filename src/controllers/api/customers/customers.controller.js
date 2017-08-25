@@ -9,6 +9,7 @@ class CustomersController {
         router.get('/:id', this.getCustomer.bind(this));
         router.post('/', this.insertCustomer.bind(this));
         router.put('/:id', this.updateCustomer.bind(this));
+        router.delete('/:id', this.deleteCustomer.bind(this));
     }
 
     getCustomers(req, res) {
@@ -82,7 +83,19 @@ class CustomersController {
         });
     }
 
+    deleteCustomer(req, res) {
+        console.log('*** deleteCustomer');
 
+        customersRepo.deleteCustomer(req.params.id, (err) => {
+            if (err) {
+                console.log('*** deleteCustomer error: ' + util.inspect(err));
+                res.json({ status: false });
+            } else {
+                console.log('*** deleteCustomer ok');
+                res.json({ status: true });
+            }
+        });
+    }
     
 
 }
