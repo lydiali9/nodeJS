@@ -40,21 +40,22 @@ export class CustomerEditComponent implements OnInit {
   }
 
   getCustomer(id: string) {
-    this.dataService.getCustomer(id)
+      this.dataService.getCustomer(id)
         .subscribe((customer: ICustomer) => {
-          const cust = JSON.stringify(customer);
-          this.customer = JSON.parse(cust);
+          this.customer = customer;
         },
         (err: any) => console.log(err));
   }
 
   getStates() {
-    this.dataService.getStates().subscribe((states: IState[]) => this.states = states);   
+    this.dataService.getStates().subscribe((states: IState[]) => this.states = states);
   }
   
   submit() {
-    if (this.customer._id) {
-      this.dataService.updateCustomer(this.customer)
+
+      if (this.customer._id) {
+
+        this.dataService.updateCustomer(this.customer)
           .subscribe((customer: ICustomer) => {
             if (customer) {
               this.router.navigate(['/customers']);
@@ -62,18 +63,22 @@ export class CustomerEditComponent implements OnInit {
               this.errorMessage = 'Unable to save customer';
             }
           },
-          (err) => console.log(err));
-    } else {
-      this.dataService.insertCustomer(this.customer)
+          (err: any) => console.log(err));
+
+      } else {
+
+        this.dataService.insertCustomer(this.customer)
           .subscribe((customer: ICustomer) => {
             if (customer) {
               this.router.navigate(['/customers']);
-            } else {
+            }
+            else {
               this.errorMessage = 'Unable to add customer';
             }
           },
           (err: any) => console.log(err));
-    }
+          
+      }
   }
   
   cancel(event: Event) {
@@ -82,7 +87,17 @@ export class CustomerEditComponent implements OnInit {
   }
 
   delete(event: Event) {
-
+    event.preventDefault();
+    this.dataService.deleteCustomer(this.customer._id)
+        .subscribe((status: boolean) => {
+          if (status) {
+            this.router.navigate(['/customers']);
+          }
+          else {
+            this.errorMessage = 'Unable to delete customer';
+          }
+        },
+        (err) => console.log(err));
   }
 
 }

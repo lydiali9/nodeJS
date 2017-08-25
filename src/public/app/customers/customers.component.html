@@ -20,8 +20,9 @@
     
         <customers-grid [customers]="filteredCustomers"></customers-grid>
 
-
-
+        <pagination [totalItems]="totalRecords" 
+            [pageSize]="pageSize" 
+            (pageChanged)="pageChanged($event)"></pagination>
           
     </div>
 </div>

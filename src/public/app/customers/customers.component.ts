@@ -25,7 +25,7 @@ export class CustomersComponent implements OnInit {
   
   ngOnInit() {
     this.title = 'Customers';
-    this.getCustomers();
+    this.getCustomersPage(1);
   }
 
   filterChanged(filterText: string) {
@@ -38,14 +38,18 @@ export class CustomersComponent implements OnInit {
     }
   }
 
+  pageChanged(page: number) {
+    this.getCustomersPage(page);
+  }
 
-  getCustomers() {
-    this.dataService.getCustomers()
-        .subscribe((customers: ICustomer[]) => {
-          this.customers = this.filteredCustomers = customers;
+  getCustomersPage(page: number) {
+    this.dataService.getCustomersPage((page - 1) * this.pageSize, this.pageSize)
+        .subscribe((response: IPagedResults<ICustomer[]>) => {
+          this.customers = this.filteredCustomers = response.results;
+          this.totalRecords = response.totalRecords;
         },
         (err: any) => console.log(err),
-        () => console.log('getCustomers() retrieved customers'));
+        () => console.log('getCustomersPage() retrieved customers'));
   }
 
 }

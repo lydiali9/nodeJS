@@ -47,9 +47,7 @@ export class CustomerEditReactiveComponent implements OnInit {
   getCustomer(id: string) {
       this.dataService.getCustomer(id)
         .subscribe((customer: ICustomer) => {
-          //Quick and dirty clone used in case user cancels out of form
-          const cust = JSON.stringify(customer);
-          this.customer = JSON.parse(cust);
+          this.customer = customer;
           this.buildForm();
         },
         (err) => console.log(err));
@@ -75,6 +73,9 @@ export class CustomerEditReactiveComponent implements OnInit {
       
       value._id = this.customer._id;
       value.zip = this.customer.zip || 0; 
+      // var customer: ICustomer = {
+      //   _id: this.customer._id,
+      // };
 
       if (value._id) {
 
@@ -100,7 +101,7 @@ export class CustomerEditReactiveComponent implements OnInit {
               this.errorMessage = 'Unable to add customer';
             }
           },
-          (err) => console.log(err));  
+          (err) => console.log(err));
           
       }
   }
@@ -111,7 +112,17 @@ export class CustomerEditReactiveComponent implements OnInit {
   }
 
   delete(event: Event) {
-
+    event.preventDefault();
+    this.dataService.deleteCustomer(this.customer._id)
+        .subscribe((status: boolean) => {
+          if (status) {
+            this.router.navigate(['/customers']);
+          }
+          else {
+            this.errorMessage = 'Unable to delete customer';
+          }
+        },
+        (err) => console.log(err));
   }
 
 }
