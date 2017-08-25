@@ -40,11 +40,16 @@ export class CustomerEditComponent implements OnInit {
   }
 
   getCustomer(id: string) {
-
+    this.dataService.getCustomer(id)
+        .subscribe((customer: ICustomer) => {
+          const cust = JSON.stringify(customer);
+          this.customer = JSON.parse(cust);
+        },
+        (err: any) => console.log(err));
   }
 
   getStates() {
-	  this.dataService.getStates().subscribe((states: IState[]) => this.states = states);  
+    this.dataService.getStates().subscribe((states: IState[]) => this.states = states);   
   }
   
   submit() {
