@@ -75,13 +75,19 @@ export class CustomerEditReactiveComponent implements OnInit {
       
       value._id = this.customer._id;
       value.zip = this.customer.zip || 0; 
-      // var customer: ICustomer = {
-      //   _id: this.customer._id,
-      // };
 
       if (value._id) {
 
-
+        this.dataService.updateCustomer(value)
+          .subscribe((customer: ICustomer) => {
+            if (customer) {
+              this.router.navigate(['/customers']);
+            }
+            else {
+              this.errorMessage = 'Unable to save customer';
+            }
+          },
+          (err) => console.log(err));
 
       } else {
 

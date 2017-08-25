@@ -54,7 +54,15 @@ export class CustomerEditComponent implements OnInit {
   
   submit() {
     if (this.customer._id) {
-
+      this.dataService.updateCustomer(this.customer)
+          .subscribe((customer: ICustomer) => {
+            if (customer) {
+              this.router.navigate(['/customers']);
+            } else {
+              this.errorMessage = 'Unable to save customer';
+            }
+          },
+          (err) => console.log(err));
     } else {
       this.dataService.insertCustomer(this.customer)
           .subscribe((customer: ICustomer) => {
