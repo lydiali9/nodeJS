@@ -85,7 +85,16 @@ export class CustomerEditReactiveComponent implements OnInit {
 
       } else {
 
-
+        this.dataService.insertCustomer(value)
+          .subscribe((customer: ICustomer) => {
+            if (customer) {
+              this.router.navigate(['/customers']);
+            }
+            else {
+              this.errorMessage = 'Unable to add customer';
+            }
+          },
+          (err) => console.log(err));  
           
       }
   }
