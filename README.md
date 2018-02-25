@@ -1,1 +1,1 @@
-# nodeJS
+build an Angular and Node.js application that can perform create, read, update and delete (CRUD) operations. Topics covered include building RESTful services with Node.js and Express, manipulating data in MongoDB and consuming services.
